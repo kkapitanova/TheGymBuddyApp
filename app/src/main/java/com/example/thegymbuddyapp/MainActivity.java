@@ -14,12 +14,15 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import com.example.thegymbuddyapp.databinding.ActivityMainBinding;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
 
 private ActivityMainBinding binding;
+    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +41,9 @@ private ActivityMainBinding binding;
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
-        String userName = getIntent().getStringExtra("USER_NAME");
-        System.out.println(userName);
+        String userID = getIntent().getStringExtra("USER_ID");
+        System.out.println(userID);
+
     }
 
     // called upon Save button click
