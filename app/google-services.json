@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "217537459809",
+    "project_id": "thegymbuddy-cff99",
+    "storage_bucket": "thegymbuddy-cff99.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:217537459809:android:076bbc6323f11bd4885c20",
+        "android_client_info": {
+          "package_name": "com.example.thegymbuddyapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "217537459809-5b2rilpeerhs1t5h82sle2v5mqo2e9ib.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBt85Lq_85BcziAyjburMVDsevWo1Nx3M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "217537459809-5b2rilpeerhs1t5h82sle2v5mqo2e9ib.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

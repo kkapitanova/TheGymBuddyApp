@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_workouts"
+        android:icon="@drawable/ic_baseline_fitness_center_24"
+        android:title="Archive"/>
+
+    <item
+        android:id="@+id/navigation_addworkout"
+        android:icon="@drawable/ic_baseline_add_circle_outline_24dp"
+        android:title="Add Workout"/>
+
+    <item
+        android:id="@+id/navigation_profile"
+        android:icon="@drawable/ic_baseline_person_24dp"
+        android:title="Profile"/>
+
+    <item
+        android:id="@+id/navigation_userguide"
+        android:icon="@drawable/ic_baseline_help_24dp"
+        android:title="User Guide"/>
+
+</menu>

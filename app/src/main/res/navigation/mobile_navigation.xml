@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_workouts">
+
+    <fragment
+        android:id="@+id/navigation_workouts"
+        android:name="com.example.thegymbuddyapp.ui.workouts.WorkoutsFragment"
+        android:label="Workouts Archive"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/navigation_addworkout"
+        android:name="com.example.thegymbuddyapp.ui.addWorkout.AddWorkoutFragment"
+        android:label="Add Workout"
+        tools:layout="@layout/fragment_dashboard" />
+
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.example.thegymbuddyapp.ui.profile.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/navigation_userguide"
+        android:name="com.example.thegymbuddyapp.ui.UserGuide"
+        android:label="User Guide"
+        tools:layout="@layout/fragment_user_guide" />
+</navigation>
