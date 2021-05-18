@@ -65,8 +65,8 @@ public class UserGuide extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_user_guide, container, false);
 
-        WebView myWebView = (WebView) v.findViewById(R.id.userGuideWebView);
-        myWebView.loadUrl("file:///android_asset/userguide.html");
+        WebView userGuideView = (WebView) v.findViewById(R.id.userGuideWebView);
+        userGuideView.loadUrl("file:///android_asset/userguide.html");
 
 
         return v;

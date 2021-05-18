@@ -26,6 +26,7 @@ private FragmentProfileBinding binding;
     binding = FragmentProfileBinding.inflate(inflater, container, false);
     View root = binding.getRoot();
 
+
         final TextView textView = binding.textNotifications;
         profileViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
