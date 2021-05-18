@@ -18,8 +18,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.lang.reflect.Array;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -31,6 +36,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private ProgressDialog mLoadingBar;
+    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,14 +86,25 @@ public class RegisterActivity extends AppCompatActivity {
             mLoadingBar.setCanceledOnTouchOutside(false);
             mLoadingBar.show();
 
-            mAuth.createUserWithEmailAndPassword(userEmail, userPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            mAuth.createUserWithEmailAndPassword(userEmail, userPassword)
+            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
                     if (task.isSuccessful()){
+
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        String userID = user.getUid();
+
                         mLoadingBar.dismiss();
                         Toast.makeText(RegisterActivity.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
+
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        mDatabase = database.getReference();
+                        DatabaseReference usersRef = mDatabase.child("users");
+                        usersRef.child(userID).child("name").setValue(userName);
+
                         Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-                        intent.putExtra("USER_NAME", userName);
+                        intent.putExtra("USER_ID", userID);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
                     } else {
