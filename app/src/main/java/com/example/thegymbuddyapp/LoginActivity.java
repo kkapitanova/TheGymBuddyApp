@@ -72,10 +72,11 @@ public class LoginActivity extends AppCompatActivity {
                 public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
                     if (task.isSuccessful()){
 
-                        System.out.println(String.valueOf(task.getResult().getUser().getUid()));
+                        String userID = String.valueOf(task.getResult().getUser().getUid());
 
                         mLoadingBar.dismiss();
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        intent.putExtra("USER_ID", userID);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
                     } else {
