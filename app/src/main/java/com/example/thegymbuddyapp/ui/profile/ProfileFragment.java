@@ -30,6 +30,8 @@ private FragmentProfileBinding binding;
 
         TextView profileName = root.findViewById(R.id.profileNameTextView);
         profileName.setText(MainActivity.profileName);
+        TextView dateJoined = root.findViewById(R.id.dateJoinedTextView);
+        dateJoined.setText(MainActivity.dateJoined);
 
 
         final TextView textView = binding.textNotifications;

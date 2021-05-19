@@ -2,6 +2,7 @@ package com.example.thegymbuddyapp;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,14 +30,19 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -47,7 +53,8 @@ public class MainActivity extends AppCompatActivity {
     DatabaseReference usersRef;
     String userID;
     String joinedDate;
-    public static String profileName = "Hello, ";
+    public static String profileName = "";
+    public static String dateJoined = "";
 
     ListView workoutsListView;
     ArrayList<String> workoutsList = new ArrayList<>();
@@ -79,8 +86,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         userID = getIntent().getStringExtra("USER_ID");
-        System.out.println("userID");
-        System.out.println(userID);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         mDatabase = database.getReference();
@@ -89,11 +94,11 @@ public class MainActivity extends AppCompatActivity {
         usersRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-
                 userName = snapshot.child(userID).child("name").getValue().toString();
                 user = snapshot.child(userID).getValue().toString();
                 joinedDate = snapshot.child(userID).child("joined").getValue().toString();
-                profileName = profileName + userName + "!";
+                profileName = profileName + userName;
+                dateJoined = profileName+ joinedDate;
 //                System.out.println("in ondatachange function");
 //                System.out.println(userName);
 //                System.out.println(user);
@@ -114,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
     public class fetchWorkouts extends AsyncTask<String, String, ArrayList<String>> {
         @Override
         public void onPreExecute() {
@@ -122,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected ArrayList<String> doInBackground(String... params) {
-            System.out.println(userID);
+//            System.out.println(userID);
             DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("users").child(userID).child("workouts");
 
             workoutsList.clear();
@@ -130,11 +136,48 @@ public class MainActivity extends AppCompatActivity {
             reference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         workoutsList.add(snapshot.getValue().toString());
                     }
-                    System.out.println("workoutsList");
-                    System.out.println(workoutsList);
+
+                    System.out.println(workoutsList.getClass().getName());
+
+                    for (int i = 0; i < workoutsList.size(); i++) {
+                        try {
+
+                            String workout = workoutsList.get(i); //arraylist contains strings
+
+                            String name = "Workout name";
+                            int index = workout.indexOf("=");
+                            name = workout.substring(0,index);
+                            String workoutName = name.replace("{", "");
+                            System.out.println("workoutName");
+                            System.out.println(workoutName);
+
+
+                            String[] workoutDescriptionStringArray = workout.split("=");
+                            String description = "";
+                            for (String el: workoutDescriptionStringArray){
+                                description = el;
+                            }
+                            System.out.println(description);
+                            String workoutDescription = description.replace("}", "");
+                            System.out.println(workoutDescription);
+
+
+
+                            String jsonString = "{\'name\':\'" + workoutName + "\', \'description\':\"" + workoutDescription + "\"}";
+                            System.out.println(jsonString.getClass().getName());
+                            JSONObject workoutObject = new JSONObject(jsonString);
+
+                            System.out.println("WORKOUTTT ");
+                            System.out.println(workoutObject);
+                            System.out.println(workoutObject.getClass().getName());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
 
 //                    String[] productGroups = {"proteins", "vegetables", "fruits", "dairy", "grains"};
 
@@ -259,6 +302,13 @@ public class MainActivity extends AppCompatActivity {
         workoutName.setText("");
         EditText workoutDescription = findViewById(R.id.workoutDescription);
         workoutDescription.setText("");
+    }
+
+    public void logOutBtnClickHandler(View v) {
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        Toast.makeText(MainActivity.this, "You have been logged out successfuly. See you soon!", Toast.LENGTH_SHORT).show();
+        startActivity(intent);
     }
 
 }
