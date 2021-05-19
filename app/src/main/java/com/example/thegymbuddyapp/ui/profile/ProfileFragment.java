@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.thegymbuddyapp.MainActivity;
+import com.example.thegymbuddyapp.R;
 import com.example.thegymbuddyapp.databinding.FragmentProfileBinding;
 
 public class ProfileFragment extends Fragment {
@@ -26,6 +28,9 @@ private FragmentProfileBinding binding;
     binding = FragmentProfileBinding.inflate(inflater, container, false);
     View root = binding.getRoot();
 
+        TextView profileName = root.findViewById(R.id.profileNameTextView);
+        profileName.setText(MainActivity.profileName);
+
 
         final TextView textView = binding.textNotifications;
         profileViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
@@ -35,6 +40,7 @@ private FragmentProfileBinding binding;
             }
         });
         return root;
+
     }
 
 @Override
