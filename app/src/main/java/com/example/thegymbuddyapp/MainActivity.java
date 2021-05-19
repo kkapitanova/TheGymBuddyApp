@@ -173,9 +173,21 @@ public class MainActivity extends AppCompatActivity {
                             System.out.println("WORKOUTTT ");
                             System.out.println(workoutObject);
                             System.out.println(workoutObject.getClass().getName());
+
+                            workoutModel workoutModel = new workoutModel();
+                            workoutModel.setDescription(workoutObject.getString("name"));
+                            workoutModel.setName(workoutObject.getString("description"));
+
+                            workoutsList.add(workoutModel);
+                            WorkoutAdapter workoutAdapter = new WorkoutAdapter(MainActivity.this, workoutsList);
+                            workoutsListView.setAdapter(workoutAdapter);
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+
+
+
                     }
 
 
