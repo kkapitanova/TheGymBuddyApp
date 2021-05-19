@@ -54,10 +54,13 @@ public class MainActivity extends AppCompatActivity {
     String userID;
     String joinedDate;
     public static String profileName = "";
-    public static String dateJoined = "";
+    public static String dateJoined = "Date Joined: ";
+    public static String totalWorkouts = "Total Workouts: ";
 
     ListView workoutsListView;
     ArrayList<String> workoutsList = new ArrayList<>();
+    ArrayList<workoutModel> workoutsListModel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         workoutsListView = findViewById(R.id.workoutsListView);
+        workoutsListModel = new ArrayList<>();
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
@@ -94,16 +98,27 @@ public class MainActivity extends AppCompatActivity {
         usersRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                profileName = "";
+                dateJoined = "Joined: ";
+                totalWorkouts = "Total Workouts: ";
                 userName = snapshot.child(userID).child("name").getValue().toString();
                 user = snapshot.child(userID).getValue().toString();
                 joinedDate = snapshot.child(userID).child("joined").getValue().toString();
                 profileName = profileName + userName;
-                dateJoined = profileName+ joinedDate;
-//                System.out.println("in ondatachange function");
-//                System.out.println(userName);
-//                System.out.println(user);
-//                System.out.println(joinedDate);
-//                System.out.println(snapshot.child(userID).child("workouts"));
+                dateJoined = dateJoined + joinedDate;
+                String workouts = snapshot.child(userID).child("workouts").getValue().toString();
+                System.out.println(workouts);
+                String[] workoutsArray = workouts.split("name=");
+                int count = 0;
+                System.out.println(workoutsArray.length);
+                for (int i = 0; i<workoutsArray.length-1; i++){
+                    count =  count + 1;
+                }
+                System.out.println("Stringvalue");
+                System.out.println(String.valueOf(count));
+                totalWorkouts = totalWorkouts + String.valueOf(count);
+
+
 
             }
 
@@ -119,7 +134,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     public class fetchWorkouts extends AsyncTask<String, String, ArrayList<String>> {
         @Override
         public void onPreExecute() {
@@ -131,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
 //            System.out.println(userID);
             DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("users").child(userID).child("workouts");
 
-            workoutsList.clear();
+            workoutsListModel.clear();
 
             reference.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -139,8 +153,6 @@ public class MainActivity extends AppCompatActivity {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         workoutsList.add(snapshot.getValue().toString());
                     }
-
-                    System.out.println(workoutsList.getClass().getName());
 
                     for (int i = 0; i < workoutsList.size(); i++) {
                         try {
@@ -164,89 +176,22 @@ public class MainActivity extends AppCompatActivity {
                             String workoutDescription = description.replace("}", "");
                             System.out.println(workoutDescription);
 
-
-
                             String jsonString = "{\'name\':\'" + workoutName + "\', \'description\':\"" + workoutDescription + "\"}";
                             System.out.println(jsonString.getClass().getName());
                             JSONObject workoutObject = new JSONObject(jsonString);
 
-                            System.out.println("WORKOUTTT ");
-                            System.out.println(workoutObject);
-                            System.out.println(workoutObject.getClass().getName());
-
                             workoutModel workoutModel = new workoutModel();
-                            workoutModel.setDescription(workoutObject.getString("name"));
-                            workoutModel.setName(workoutObject.getString("description"));
+                            workoutModel.setName(workoutObject.getString("name"));
+                            workoutModel.setDescription(workoutObject.getString("description"));
 
-                            workoutsList.add(workoutModel);
-                            WorkoutAdapter workoutAdapter = new WorkoutAdapter(MainActivity.this, workoutsList);
+                            workoutsListModel.add(workoutModel);
+                            WorkoutAdapter workoutAdapter = new WorkoutAdapter(MainActivity.this, workoutsListModel);
                             workoutsListView.setAdapter(workoutAdapter);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
-
-
                     }
-
-
-//                    String[] productGroups = {"proteins", "vegetables", "fruits", "dairy", "grains"};
-
-//                    for (String productGroup : productGroups) {
-//                        try {
-//                            JSONObject productsObject = new JSONObject(productsList.get(0));
-//                            JSONArray products = productsObject.getJSONArray(productGroup);
-//
-//                            for (int i = 0; i < products.length(); i++) {
-//                                JSONObject product = products.getJSONObject(i);
-//
-//                                String id = product.getString("id");
-//                                String title = product.getString("title");
-//                                Boolean selected = product.getBoolean("selected");
-//
-//                                checkboxModel model = new checkboxModel();
-//                                model.setId(id);
-//                                model.setTitle(title);
-//                                model.setSelected(selected);
-//
-//                                switch (productGroup) {
-//                                    case ("proteins"):
-//                                        proteinsList.add(model);
-//                                        CheckboxAdapter proteinsAdapter = new CheckboxAdapter(MainActivity.this, proteinsList);
-//                                        proteinsListView.setAdapter(proteinsAdapter);
-//
-//                                        break;
-//                                    case ("vegetables"):
-//                                        vegetablesList.add(model);
-//                                        CheckboxAdapter vegAdapter = new CheckboxAdapter(MainActivity.this, vegetablesList);
-//                                        vegetablesListView.setAdapter(vegAdapter);
-//
-//                                        break;
-//                                    case ("fruits"):
-//                                        fruitsList.add(model);
-//                                        CheckboxAdapter fruitsAdapter = new CheckboxAdapter(MainActivity.this, fruitsList);
-//                                        fruitsListView.setAdapter(fruitsAdapter);
-//
-//                                        break;
-//                                    case ("dairy"):
-//                                        dairyList.add(model);
-//                                        CheckboxAdapter dairyAdapter = new CheckboxAdapter(MainActivity.this, dairyList);
-//                                        dairyListView.setAdapter(dairyAdapter);
-//
-//                                        break;
-//                                    case ("grains"):
-//                                        grainsList.add(model);
-//                                        CheckboxAdapter grainsAdapter = new CheckboxAdapter(MainActivity.this, grainsList);
-//                                        grainsListView.setAdapter(grainsAdapter);
-//
-//                                        break;
-//                                }
-//                            }
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
                 }
 
                 @Override
@@ -324,3 +269,4 @@ public class MainActivity extends AppCompatActivity {
     }
 
 }
+

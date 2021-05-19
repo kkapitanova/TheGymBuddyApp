@@ -32,6 +32,8 @@ private FragmentProfileBinding binding;
         profileName.setText(MainActivity.profileName);
         TextView dateJoined = root.findViewById(R.id.dateJoinedTextView);
         dateJoined.setText(MainActivity.dateJoined);
+        TextView totalWorkouts = root.findViewById(R.id.totalWorkoutsTextView);
+        totalWorkouts.setText(MainActivity.totalWorkouts);
 
 
         final TextView textView = binding.textNotifications;
