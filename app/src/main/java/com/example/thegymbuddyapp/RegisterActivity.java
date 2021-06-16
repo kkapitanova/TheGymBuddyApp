@@ -25,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Array;
+import java.util.Date;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -102,11 +103,15 @@ public class RegisterActivity extends AppCompatActivity {
                         mDatabase = database.getReference();
                         DatabaseReference usersRef = mDatabase.child("users");
                         usersRef.child(userID).child("name").setValue(userName);
+                        Date today = new Date();
+                        System.out.println(today.toString());
+                        usersRef.child(userID).child("joined").setValue(today.toString());
 
                         Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
                         intent.putExtra("USER_ID", userID);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
+
                     } else {
                         Toast.makeText(RegisterActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                         mLoadingBar.dismiss();

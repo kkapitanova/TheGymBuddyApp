@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.thegymbuddyapp.MainActivity;
 import com.example.thegymbuddyapp.databinding.FragmentDashboardBinding;
 
 public class AddWorkoutFragment extends Fragment {
@@ -34,6 +35,8 @@ private FragmentDashboardBinding binding;
             }
         });
         return root;
+
+
     }
 
 @Override

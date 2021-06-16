@@ -79,6 +79,7 @@ public class LoginActivity extends AppCompatActivity {
                         intent.putExtra("USER_ID", userID);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
+
                     } else {
                         Toast.makeText(LoginActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                         mLoadingBar.dismiss();
